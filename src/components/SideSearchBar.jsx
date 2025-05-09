@@ -7,7 +7,7 @@ const SideSearchBar = () => {
 
 
     return (
-        <div className="w-full mx-auto bg-white p-4 rounded-lg shadow-md text-center">
+        <div className="w-full mx-auto bg-white p-4 rounded shadow-md text-center">
             {/* Header */}
             <h2 className="text-xl font-semibold text-purple-700 mb-1">Filter Options</h2>
             <p className="text-sm text-gray-600 mb-4">

@@ -13,7 +13,7 @@ const BiodataCard = ({ premiumProfile = {} }) => {
     } = premiumProfile;
 
     return (
-        <div className="bg-white shadow-md rounded overflow-hidden w-full max-w-sm mx-auto">
+        <div className="bg-white shadow-md rounded overflow-hidden w-full">
             {/* Header */}
             <div className="flex  justify-between px-4 pt-4">
                 <div className="flex items-center space-x-2">
@@ -31,7 +31,7 @@ const BiodataCard = ({ premiumProfile = {} }) => {
                     </div>
                 </div>
                 <div className='flex items-center max-h-[40px] px-4 rounded border border-gray-400'>
-                    <CiHeart className='font-bold text-pink-400' size={28} />
+                    <CiHeart className='font-bold text-[#e60076]' size={28} />
                 </div>
             </div>
 
@@ -77,7 +77,7 @@ const BiodataCard = ({ premiumProfile = {} }) => {
                     <FaShareAlt className="w-4 h-4" />
                     <span>Share</span>
                 </button>
-                <button className="mt-3 px-4 py-2 font-semibold bg-pink-400 text-white rounded cursor-pointer hover:scale-105">
+                <button className="mt-3 px-4 py-2 font-semibold bg-[#e60076] text-white rounded cursor-pointer hover:scale-105">
                     View Profile
                 </button>
             </div>
