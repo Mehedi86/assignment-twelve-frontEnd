@@ -12,7 +12,7 @@ const SuccessStoryCard = ({ successStory }) => {
                     {[...Array(5)].map((_, index) => (
                         <FaStar
                             key={index}
-                            className={index < reviewStar ? 'text-yellow-400' : 'text-gray-500'}
+                            className={index < reviewStar ? 'text-yellow-400' : 'text-gray-50'}
                         />
                     ))}
                 </div>

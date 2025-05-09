@@ -12,7 +12,7 @@ const Navbar = () => {
             {/* navigation items */}
             <div className='text-white space-x-2'>
                 <NavLink>Home</NavLink>
-                <NavLink>Biodatas</NavLink>
+                <NavLink to="/biodatas">Biodatas</NavLink>
                 <NavLink>About Us</NavLink>
                 <NavLink>Contact Us</NavLink>
             </div>
