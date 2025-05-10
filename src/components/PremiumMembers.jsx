@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import BiodataCard from './BiodataCard';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
 
 const PremiumMembers = () => {
     const [premiumProfiles, setPremiumProfiles] = useState([]);
@@ -8,22 +12,33 @@ const PremiumMembers = () => {
         fetch('/biodatas.json')
             .then(res => res.json())
             .then(data => {
-                // Filter premium members
-                const premiumMembers = data.filter(profile => profile.isPremium);
-                setPremiumProfiles(premiumMembers);
+                const premium = data.filter(profile => profile.isPremium);
+                setPremiumProfiles(premium);
             });
     }, []);
 
     return (
         <div className='container mx-auto border border-stone-200 rounded p-6'>
             <h1 className='text-4xl font-semibold text-center py-12'>Premium Members</h1>
-            <div className='grid grid-cols-4 gap-6'>
+            <Swiper
+                modules={[Navigation]}
+                spaceBetween={20}
+                slidesPerView={4}
+                navigation
+                breakpoints={{
+                    1024: { slidesPerView: 4 },
+                    768: { slidesPerView: 2 },
+                    640: { slidesPerView: 1 }
+                }}
+            >
                 {
-                    premiumProfiles.map(premium => (
-                        <BiodataCard key={premium.biodataId} biodata={premium} />
+                    premiumProfiles.map(profile => (
+                        <SwiperSlide key={profile.biodataId} className="pb-6">
+                            <BiodataCard biodata={profile} />
+                        </SwiperSlide>
                     ))
                 }
-            </div>
+            </Swiper>
         </div>
     );
 };

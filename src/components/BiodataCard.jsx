@@ -3,11 +3,10 @@ import { FaEye, FaShareAlt } from 'react-icons/fa';
 import { CiHeart } from "react-icons/ci";
 
 const BiodataCard = ({ biodata }) => {
-    const { age, biodataId, biodataType, height, maritalStatus, occupation, permanentDivision, profileImage } = biodata;
+    const { age, biodataId, biodataType, height, maritalStatus, occupation, PermanentDivision, profileImage } = biodata;
 
     return (
-        <div className={`bg-white shadow-md rounded overflow-hidden w-full`}>
-            {/* Header */}
+        <div className="h-full flex flex-col justify-between rounded shadow-xl p-4 bg-white min-h-[400px]">
             <div className="flex justify-between px-4 pt-4">
                 <div className="flex items-center space-x-2">
                     <img
@@ -27,8 +26,6 @@ const BiodataCard = ({ biodata }) => {
                     <CiHeart className="font-bold text-[#e60076]" size={28} />
                 </div>
             </div>
-
-            {/* Info Table */}
             <div className="p-4 text-xl text-gray-700">
                 <div className="flex border-y-2 border-gray-200">
                     <div className="w-1/2 border-r-2 border-gray-200 py-2">
@@ -40,10 +37,10 @@ const BiodataCard = ({ biodata }) => {
                 </div>
                 <div className="flex border-b-2 border-gray-200">
                     <div className="w-1/2 border-r-2 border-gray-200 py-2">
-                        <p className="pl-4">Permanent Address</p>
+                        <p className="pl-4">P.  Address</p>
                     </div>
                     <div className="w-1/2 py-2">
-                        <p className="pl-4">{permanentDivision}</p>
+                        <p className="pl-4">{PermanentDivision}</p>
                     </div>
                 </div>
                 <div className="flex border-b-2 border-gray-200">
@@ -79,8 +76,6 @@ const BiodataCard = ({ biodata }) => {
                     </div>
                 </div>
             </div>
-
-            {/* Buttons */}
             <div className="flex justify-between items-center px-4 pb-4">
                 <button className="flex items-center space-x-1 text-sm text-gray-600 hover:text-black">
                     <FaShareAlt className="w-4 h-4" />
