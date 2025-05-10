@@ -3,7 +3,7 @@ import { FaEye, FaShareAlt } from 'react-icons/fa';
 import { CiHeart } from "react-icons/ci";
 
 const BiodataCard = ({ biodata }) => {
-    const { age, biodataId, biodataType, dateOfBirth, height, isPremium, maritalStatus, occupation, permanentDivision, profileImage } = biodata;
+    const { age, biodataId, biodataType, height, maritalStatus, occupation, permanentDivision, profileImage } = biodata;
 
     return (
         <div className={`bg-white shadow-md rounded overflow-hidden w-full`}>
@@ -44,14 +44,6 @@ const BiodataCard = ({ biodata }) => {
                     </div>
                     <div className="w-1/2 py-2">
                         <p className="pl-4">{permanentDivision}</p>
-                    </div>
-                </div>
-                <div className="flex border-b-2 border-gray-200">
-                    <div className="w-1/2 border-r-2 border-gray-200 py-2">
-                        <p className="pl-4">Date of Birth</p>
-                    </div>
-                    <div className="w-1/2 py-2">
-                        <p className="pl-4">{dateOfBirth}</p>
                     </div>
                 </div>
                 <div className="flex border-b-2 border-gray-200">
