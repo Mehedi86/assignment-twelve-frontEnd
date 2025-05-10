@@ -11,7 +11,8 @@ const Navbar = () => {
             </div>
             {/* navigation items */}
             <div className='text-white space-x-2'>
-                <NavLink>Home</NavLink>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/dashboard">DashBoard</NavLink>
                 <NavLink to="/biodatas">Biodatas</NavLink>
                 <NavLink>About Us</NavLink>
                 <NavLink>Contact Us</NavLink>

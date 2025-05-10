@@ -40,14 +40,19 @@ const Biodatas = () => {
     });
 
     return (
-        <div className='grid grid-cols-12 gap-6 my-12'>
-            <div className='col-span-3'>
+        <div className="grid grid-cols-12 gap-6 my-12">
+            {/* Sidebar */}
+            <div className="col-span-3">
                 <SideSearchBar filters={filters} onFilterChange={handleFilterChange} />
             </div>
-            <div className='col-span-9 grid grid-cols-3 gap-6'>
-                {filteredBiodatas.map(biodata => (
-                    <BiodataCard key={biodata.biodataId} biodata={biodata} />
-                ))}
+
+            {/* Main content (biodata cards) */}
+            <div className="col-span-9 h-[800px] overflow-y-scroll pr-2">
+                <div className="grid grid-cols-3 gap-6 h-fit">
+                    {filteredBiodatas.map(biodata => (
+                        <BiodataCard key={biodata.biodataId} biodata={biodata} />
+                    ))}
+                </div>
             </div>
         </div>
     );
