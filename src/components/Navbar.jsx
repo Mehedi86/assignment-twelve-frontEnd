@@ -6,7 +6,16 @@ import useAuthInfo from '../hooks/useAuthInfo';
 
 
 const Navbar = () => {
-    const {user} = useAuthInfo();
+    const { user, logoutUser } = useAuthInfo();
+    const handleLogout = () => {
+        logoutUser()
+            .then(() => {
+                console.log("Logout successful");
+            })
+            .catch((error) => {
+                console.error("Error during logout:", error);
+            });
+    }
     return (
         // <div className='flex justify-between items-center h-16 w-full bg-[#2a2525] px-2'>
         //     {/* logo and name */}
@@ -39,8 +48,8 @@ const Navbar = () => {
                         {/* login items */}
                         {user ? <>
                             <div className='flex flex-col items-center'>
-                                
-                                <button  className='cursor-pointer font-semibold'>Logout</button>
+
+                                <button onClick={handleLogout} className='cursor-pointer font-semibold'>Logout</button>
                             </div>
                         </>
                             :
@@ -58,18 +67,11 @@ const Navbar = () => {
                 <div className="max-w-screen-xl px-4 py-3 mx-auto">
                     <div className="flex items-center">
                         <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
-                            <li>
-                                <a href="#" className="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-900 dark:text-white hover:underline">Company</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-900 dark:text-white hover:underline">Team</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-900 dark:text-white hover:underline">Features</a>
-                            </li>
+                            <NavLink to="/">Home</NavLink>
+                            <NavLink to="/dashboard">DashBoard</NavLink>
+                            <NavLink to="/biodatas">Biodatas</NavLink>
+                            <NavLink>About Us</NavLink>
+                            <NavLink>Contact Us</NavLink>
                         </ul>
                     </div>
                 </div>
