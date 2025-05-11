@@ -3,7 +3,7 @@ import { TypeAnimation } from 'react-type-animation';
 
 const Banner = () => {
     return (
-        <div className="h-[600px] bg-[url(/banner.jpg)] bg-center bg-cover flex items-center justify-center">
+        <div className="h-[600px] bg-[url(/banner.jpg)] bg-black/10 bg-blend-overlay bg-center bg-cover flex items-center justify-center">
             <div>
                 <div>
                     <p className="text-black text-6xl font-bold">

@@ -21,7 +21,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-gray-100 p-5 border-r flex flex-col justify-between min-h-[calc(100vh-204px)]">
+    <aside className="w-64 bg-gray-100 p-5 border-r border-b flex flex-col justify-between h-[450px]">
       <div>
         <h2 className="text-xl font-bold mb-6">Dashboard</h2>
         <ul className="space-y-3">

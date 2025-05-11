@@ -13,9 +13,9 @@ const Dashboard = () => {
             </div>
             <div className="min-h-[calc(100vh-204px)] flex">
                 <Sidebar />
-                <main>
+                <div className='w-full'>
                     <Outlet />
-                </main>
+                </div>
             </div>
         </div>
     );
