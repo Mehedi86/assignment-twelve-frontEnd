@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import SocialLogin from '../components/SocialLogin';
+import useAuthInfo from '../hooks/useAuthInfo';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const {loginUser} = useAuthInfo();
 
     const handleLogin = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-
-        console.log("Email:", email);
-        console.log("Password:", password);
+        loginUser(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log("User logged in:", user);
+            })
+            .catch(error => {
+                console.error("Error during login:", error);
+            });
     };
     return (
         <div className='max-w-sm mx-auto py-20'>
