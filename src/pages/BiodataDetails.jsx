@@ -11,29 +11,60 @@ const BiodataDetails = () => {
     const { user } = useAuthInfo();
 
     useEffect(() => {
-        fetch('http://localhost:5000/biodatas')
-            .then(res => res.json())
-            .then(data => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch('http://localhost:5000/biodatas');
+                const allData = await res.json();
+
                 let biodata;
-                if (id === null || id === undefined) {
-                    // If no ID, find the user's own biodata
-                    biodata = data.find(item => item.contactEmail === user?.email);
+                if (!id) {
+                    biodata = allData.find(item => item.contactEmail === user?.email);
                 } else {
-                    // Find biodata by ID
-                    biodata = data.find(item => item.biodataId === id);
+                    biodata = allData.find(item => item.biodataId === id);
                 }
+
                 setData(biodata || null);
+
+                // Check if already favorited
+                if (user?.email && biodata?.biodataId) {
+                    const favRes = await fetch(`http://localhost:5000/favourites?email=${user.email}&biodataId=${biodata.biodataId}`);
+                    const favData = await favRes.json();
+                    setIsFavorite(favData.isFavorite);
+                }
+
                 setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching biodata:', error);
+            } catch (error) {
+                console.error('Error fetching data:', error);
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchData();
     }, [id, user?.email]);
 
-    const toggleFavorite = () => {
-        setIsFavorite(!isFavorite);
-        // Here you would typically make an API call to update favorites
+    const toggleFavorite = async () => {
+        if (!data?.biodataId || !user?.email) return;
+
+        const favouriteData = {
+            userEmail: user.email,
+            biodataId: data.biodataId,
+        };
+
+        try {
+            const res = await fetch('http://localhost:5000/favourites', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(favouriteData),
+            });
+
+            const result = await res.json();
+
+            if (result.insertedId) {
+                setIsFavorite(true); // Successfully added to favorites
+            }
+        } catch (err) {
+            console.error('Failed to add to favorites:', err);
+        }
     };
 
     if (loading) {
@@ -52,28 +83,23 @@ const BiodataDetails = () => {
         );
     }
 
-    // Check if current user is premium (using actual user data from auth)
     const isPremiumUser = user?.isPremium || false;
-    // Check if this is the user's own biodata
     const isOwnBiodata = data.contactEmail === user?.email;
 
     return (
         <div className="max-w-4xl mx-auto my-4 p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col md:flex-row gap-8">
-                {/* Profile Image */}
                 <div className="w-full md:w-1/3">
-                    <img 
-                        src={data.profileImage || 'https://via.placeholder.com/300'} 
-                        alt="Profile" 
+                    <img
+                        src={data.profileImage || ''}
+                        alt="Profile"
                         className="w-full h-auto rounded-lg object-cover"
-                        onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/300';
-                        }}
                     />
                     {!isOwnBiodata && (
-                        <button 
+                        <button
                             onClick={toggleFavorite}
-                            className="mt-4 w-full flex items-center justify-center gap-2 bg-pink-100 text-pink-600 py-2 px-4 rounded-lg hover:bg-pink-200 transition"
+                            className="mt-4 w-full flex items-center justify-center gap-2 bg-pink-100 text-pink-600 py-2 px-4 rounded-lg transition disabled:opacity-50"
+                            disabled={isFavorite}
                         >
                             {isFavorite ? (
                                 <><FaHeart /> Added to Favorites</>
@@ -84,7 +110,6 @@ const BiodataDetails = () => {
                     )}
                 </div>
 
-                {/* Biodata Information */}
                 <div className="w-full md:w-2/3">
                     <h1 className="text-2xl font-bold text-gray-800 mb-2">
                         Biodata ID: {data.biodataId} ({data.biodataType})
@@ -92,74 +117,42 @@ const BiodataDetails = () => {
                     <p className="text-gray-600 mb-6">Age: {data.age} years</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Personal Information */}
                         <div className="space-y-4">
                             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Personal Information</h2>
-                            <div>
-                                <p className="text-gray-600">Marital Status: <span className="text-gray-800">{data.maritalStatus}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Height: <span className="text-gray-800">{data.height}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Date of Birth: <span className="text-gray-800">{data.dateOfBirth}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Occupation: <span className="text-gray-800">{data.occupation}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Race: <span className="text-gray-800">{data.race}</span></p>
-                            </div>
+                            <p className="text-gray-600">Marital Status: <span className="text-gray-800">{data.maritalStatus}</span></p>
+                            <p className="text-gray-600">Height: <span className="text-gray-800">{data.height}</span></p>
+                            <p className="text-gray-600">Date of Birth: <span className="text-gray-800">{data.dateOfBirth}</span></p>
+                            <p className="text-gray-600">Occupation: <span className="text-gray-800">{data.occupation}</span></p>
+                            <p className="text-gray-600">Race: <span className="text-gray-800">{data.race}</span></p>
                         </div>
 
-                        {/* Family Information */}
                         <div className="space-y-4">
                             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Family Information</h2>
-                            <div>
-                                <p className="text-gray-600">Father's Name: <span className="text-gray-800">{data.fatherName}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Mother's Name: <span className="text-gray-800">{data.motherName}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Present Division: <span className="text-gray-800">{data.presentDivision}</span></p>
-                            </div>
-                            <div>
-                                <p className="text-gray-600">Permanent Division: <span className="text-gray-800">{data.PermanentDivision}</span></p>
-                            </div>
+                            <p className="text-gray-600">Father's Name: <span className="text-gray-800">{data.fatherName}</span></p>
+                            <p className="text-gray-600">Mother's Name: <span className="text-gray-800">{data.motherName}</span></p>
+                            <p className="text-gray-600">Present Division: <span className="text-gray-800">{data.presentDivision}</span></p>
+                            <p className="text-gray-600">Permanent Division: <span className="text-gray-800">{data.PermanentDivision}</span></p>
                         </div>
 
-                        {/* Partner Expectations */}
                         <div className="space-y-4 md:col-span-2">
                             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Partner Expectations</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <p className="text-gray-600">Age: <span className="text-gray-800">{data.expectedPartnerAge} years</span></p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-600">Height: <span className="text-gray-800">{data.expectedPartnerHeight}</span></p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-600">Weight: <span className="text-gray-800">{data.expectedPartnerWeight} kg</span></p>
-                                </div>
+                                <p className="text-gray-600">Age: <span className="text-gray-800">{data.expectedPartnerAge} years</span></p>
+                                <p className="text-gray-600">Height: <span className="text-gray-800">{data.expectedPartnerHeight}</span></p>
+                                <p className="text-gray-600">Weight: <span className="text-gray-800">{data.expectedPartnerWeight} kg</span></p>
                             </div>
                         </div>
 
-                        {/* Contact Information (Premium Only or Own Biodata) */}
                         <div className="space-y-4 md:col-span-2">
                             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2 flex items-center gap-2">
                                 Contact Information
                                 {!isPremiumUser && !isOwnBiodata && <FaLock className="text-yellow-500" />}
                             </h2>
-                            
+
                             {(isPremiumUser || isOwnBiodata) ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <p className="text-gray-600">Email: <span className="text-gray-800">{data.contactEmail}</span></p>
-                                    </div>
-                                    <div>
-                                        <p className="text-gray-600">Mobile: <span className="text-gray-800">{data.mobileNumber}</span></p>
-                                    </div>
+                                    <p className="text-gray-600">Email: <span className="text-gray-800">{data.contactEmail}</span></p>
+                                    <p className="text-gray-600">Mobile: <span className="text-gray-800">{data.mobileNumber}</span></p>
                                 </div>
                             ) : (
                                 <div className="bg-yellow-50 p-4 rounded-lg text-center">

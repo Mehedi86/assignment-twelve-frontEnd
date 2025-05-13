@@ -3,7 +3,6 @@ import useAuthInfo from '../hooks/useAuthInfo';
 
 const EditBiodata = () => {
     const { user } = useAuthInfo();
-    const [showPassword, setShowPassword] = useState(false);
     const [biodata, setBiodata] = useState({
         biodataType: '',
         name: '',
@@ -26,10 +25,12 @@ const EditBiodata = () => {
     });
 
     const divisions = ['Dhaka', 'Chattagram', 'Rangpur', 'Barisal', 'Khulna', 'Mymensingh', 'Sylhet'];
-    const heights = Array.from({ length: 51 }, (_, i) => 140 + i); // 140cm to 190cm
+    const heights = Array.from({ length: 51 }, (_, i) => 140 + i ); // 140cm to 190cm
     const weights = Array.from({ length: 61 }, (_, i) => 40 + i); // 40kg to 100kg
     const occupations = ['Doctor', 'Engineer', 'Teacher', 'Business', 'Government Job', 'Private Job', 'Student', 'Other'];
     const races = ['Fair', 'Light Brown', 'Dark Brown', 'Black'];
+
+    const religions = ['Islam', 'Hindu', 'Christian', 'Buddhist', 'Other'];
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -39,11 +40,25 @@ const EditBiodata = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Biodata submitted:", biodata);
-        // Here you would typically send the data to your backend
+        try {
+            const res = await fetch('http://localhost:5000/biodatas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(biodata),
+            });
+            const data = await res.json();
+            console.log(data);
+            alert('Biodata submitted successfully!');
+        } catch (error) {
+            console.error("Error:", error);
+            alert('Failed to submit biodata');
+        }
     };
+
 
     return (
         <div className="mx-auto w-[900px] my-12">
@@ -119,6 +134,22 @@ const EditBiodata = () => {
                         className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
                         required
                     />
+                </div>
+                <div className="mb-5">
+                    <label htmlFor="height" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Religion</label>
+                    <select
+                        name="religion"
+                        id="religion"
+                        value={biodata.religion}
+                        onChange={handleChange}
+                        className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
+                        required
+                    >
+                        <option value="">Select Religion</option>
+                        {religions.map(r => (
+                            <option key={r} value={r}>{r}</option>
+                        ))}
+                    </select>
                 </div>
 
                 {/* Height */}

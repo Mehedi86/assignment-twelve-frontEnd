@@ -9,7 +9,7 @@ const PremiumMembers = () => {
     const [premiumProfiles, setPremiumProfiles] = useState([]);
 
     useEffect(() => {
-        fetch('/biodatas.json')
+        fetch('http://localhost:5000/biodatas')
             .then(res => res.json())
             .then(data => {
                 const premium = data.filter(profile => profile.isPremium);
