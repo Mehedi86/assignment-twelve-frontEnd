@@ -46,7 +46,7 @@ const EditBiodata = () => {
     };
 
     return (
-        <div className="w-full mx-auto p-20">
+        <div className="mx-auto w-[900px] my-12">
             <form onSubmit={handleSubmit}>
                 {/* Biodata Type */}
                 <div className="mb-5">

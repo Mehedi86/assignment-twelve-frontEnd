@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaEye, FaShareAlt } from 'react-icons/fa';
 import { CiHeart } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 
 const BiodataCard = ({ biodata }) => {
     const { age, biodataId, biodataType, height, maritalStatus, occupation, PermanentDivision, profileImage } = biodata;
@@ -81,9 +82,9 @@ const BiodataCard = ({ biodata }) => {
                     <FaShareAlt className="w-4 h-4" />
                     <span>Share</span>
                 </button>
-                <button className="mt-3 px-4 py-2 font-semibold bg-[#e60076] text-white rounded cursor-pointer hover:scale-105">
+                <Link to={`/biodata/${biodataId}`}className="mt-3 px-4 py-2 font-semibold bg-[#e60076] text-white rounded cursor-pointer hover:scale-105">
                     View Profile
-                </button>
+                </Link>
             </div>
         </div>
     );

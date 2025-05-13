@@ -7,7 +7,7 @@ const SuccessStory = () => {
 
 
     useEffect(() => {
-        fetch('/success-story.json')
+        fetch('http://localhost:5000/stories')
             .then(res => res.json())
             .then(data => {
                 if (status) {

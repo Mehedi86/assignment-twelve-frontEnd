@@ -30,6 +30,10 @@ const router = createBrowserRouter([
             {
                 path: '/register',
                 element: <Register />
+            },
+            {
+                path: '/biodata/:id',
+                element: <BiodataDetails />
             }
         ]
     },

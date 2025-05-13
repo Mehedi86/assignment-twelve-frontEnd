@@ -18,10 +18,11 @@ const Biodatas = () => {
     const itemsPerPage = 3;
 
     useEffect(() => {
-        fetch('/biodatas.json')
+        fetch('http://localhost:5000/biodatas')
             .then(res => res.json())
             .then(data => setBiodatas(data));
     }, []);
+    console.log(biodatas);
 
     const handleFilterChange = (name, value) => {
         setFilters(prev => ({ ...prev, [name]: value }));
