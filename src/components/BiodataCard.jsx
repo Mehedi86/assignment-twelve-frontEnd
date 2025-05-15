@@ -4,14 +4,14 @@ import { CiHeart } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 
 const BiodataCard = ({ biodata }) => {
-    const { age, biodataId, biodataType, height, maritalStatus, occupation, PermanentDivision, profileImage } = biodata;
+    const { age, biodataId, biodataType, height, maritalStatus, occupation, PermanentDivision} = biodata;
 
     return (
         <div className="h-full flex flex-col justify-between rounded shadow-lg p-4 bg-white min-h-[400px]">
             <div className="flex justify-between px-4 pt-4">
                 <div className="flex items-center space-x-2">
                     <img
-                        src={profileImage}
+                         src={biodataType === 'Male' ? '/male.jpg' : '/female.webp'}
                         alt="Profile"
                         className="w-12 h-12 rounded-full border border-gray-400"
                     />

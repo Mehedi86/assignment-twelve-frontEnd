@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuthInfo from '../hooks/useAuthInfo';
 
 const EditBiodata = () => {
@@ -24,8 +24,29 @@ const EditBiodata = () => {
         mobileNumber: ''
     });
 
+    useEffect(() => {
+        const fetchBiodata = async () => {
+            if (user?.email) {
+                try {
+                    const res = await fetch(`http://localhost:5000/biodatas/email/${user.email}`);
+                    const data = await res.json();
+                    if (data) {
+                        setBiodata(prev => ({
+                            ...prev,
+                            ...data,
+                        }));
+                    }
+                } catch (err) {
+                    console.error('Failed to load biodata:', err);
+                }
+            }
+        };
+
+        fetchBiodata();
+    }, [user]);
+
     const divisions = ['Dhaka', 'Chattagram', 'Rangpur', 'Barisal', 'Khulna', 'Mymensingh', 'Sylhet'];
-    const heights = Array.from({ length: 51 }, (_, i) => 140 + i ); // 140cm to 190cm
+    const heights = Array.from({ length: 51 }, (_, i) => 140 + i); // 140cm to 190cm
     const weights = Array.from({ length: 61 }, (_, i) => 40 + i); // 40kg to 100kg
     const occupations = ['Doctor', 'Engineer', 'Teacher', 'Business', 'Government Job', 'Private Job', 'Student', 'Other'];
     const races = ['Fair', 'Light Brown', 'Dark Brown', 'Black'];

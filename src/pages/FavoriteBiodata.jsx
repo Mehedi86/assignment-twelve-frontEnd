@@ -65,7 +65,7 @@ const FavoriteBiodata = () => {
                 {favorites.map(bio => (
                     <div key={bio._id} className="bg-white shadow-md rounded-lg p-4">
                         <img
-                            src={bio.biodataType === 'male' ? '/male.jpg' : '/female.webp'}
+                            src={bio.biodataType === 'Male' ? '/male.jpg' : '/female.webp'}
                             alt="Profile"
                             className="w-full object-cover rounded-md mb-4"
                         />

@@ -9,6 +9,11 @@ import EditBiodata from "../pages/EditBiodata";
 import BiodataDetails from "../pages/BiodataDetails";
 import FavoriteBiodata from "../pages/FavoriteBiodata";
 import MyContctRequest from "../pages/MyContctRequest";
+import Admin from "../pages/Admin";
+import AdminLayout from "../layout/AdminLayout";
+import ApprovedContactRequest from "../pages/ApproveContactRequest";
+import ApprovedPremium from "../pages/ApprovedPremium";
+import ManageUsers from "../pages/ManageUsers";
 
 const router = createBrowserRouter([
     {
@@ -34,7 +39,7 @@ const router = createBrowserRouter([
             {
                 path: '/biodata/:id',
                 element: <BiodataDetails />
-            }
+            },
         ]
     },
     {
@@ -43,19 +48,41 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard/editBiodata',
-                element: <EditBiodata/>
+                element: <EditBiodata />
             },
             {
                 path: '/dashboard/myBiodata',
-                element: <BiodataDetails/>
+                element: <BiodataDetails />
             },
             {
                 path: '/dashboard/favourites',
-                element: <FavoriteBiodata/>
+                element: <FavoriteBiodata />
             },
             {
                 path: '/dashboard/contactsRequest',
-                element: <MyContctRequest/>
+                element: <MyContctRequest />
+            }
+        ]
+    },
+    {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+            {
+                path: '/admin',
+                element: <Admin />
+            },
+            {
+                path: '/admin/manageUsers',
+                element: <ManageUsers />
+            },
+            {
+                path: '/admin/approveContact',
+                element: <ApprovedContactRequest />
+            },
+            {
+                path: '/admin/approvePremium',
+                element: <ApprovedPremium />
             }
         ]
     }

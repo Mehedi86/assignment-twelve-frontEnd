@@ -5,6 +5,7 @@ import useAuthInfo from '../hooks/useAuthInfo';
 
 const BiodataDetails = () => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isRequested, setIsRequested] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
@@ -25,11 +26,16 @@ const BiodataDetails = () => {
 
                 setData(biodata || null);
 
-                // Check if already favorited
                 if (user?.email && biodata?.biodataId) {
+                    // Check Favorite
                     const favRes = await fetch(`http://localhost:5000/favourites?email=${user.email}&biodataId=${biodata.biodataId}`);
                     const favData = await favRes.json();
                     setIsFavorite(favData.isFavorite);
+
+                    // Check Request
+                    const reqRes = await fetch(`http://localhost:5000/requests?email=${user.email}&biodataId=${biodata.biodataId}`);
+                    const reqData = await reqRes.json();
+                    setIsRequested(reqData.isRequested);
                 }
 
                 setLoading(false);
@@ -60,10 +66,36 @@ const BiodataDetails = () => {
             const result = await res.json();
 
             if (result.insertedId) {
-                setIsFavorite(true); // Successfully added to favorites
+                setIsFavorite(true);
             }
         } catch (err) {
             console.error('Failed to add to favorites:', err);
+        }
+    };
+
+    const sendRequest = async () => {
+        if (!data?.biodataId || !user?.email) return;
+
+        const requestData = {
+            requesterEmail: user.email,
+            targetBiodataId: data.biodataId,
+            targetEmail: data.contactEmail,
+        };
+
+        try {
+            const res = await fetch('http://localhost:5000/requests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData),
+            });
+
+            const result = await res.json();
+
+            if (result.insertedId) {
+                setIsRequested(true);
+            }
+        } catch (err) {
+            console.error('Failed to send request:', err);
         }
     };
 
@@ -91,22 +123,36 @@ const BiodataDetails = () => {
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="w-full md:w-1/3">
                     <img
-                        src={data.profileImage || ''}
+                        src={data.biodataType === 'Male' ? '/male.jpg' : '/female.webp'}
                         alt="Profile"
                         className="w-full h-auto rounded-lg object-cover"
                     />
                     {!isOwnBiodata && (
-                        <button
-                            onClick={toggleFavorite}
-                            className="mt-4 w-full flex items-center justify-center gap-2 bg-pink-100 text-pink-600 py-2 px-4 rounded-lg transition disabled:opacity-50"
-                            disabled={isFavorite}
-                        >
-                            {isFavorite ? (
-                                <><FaHeart /> Added to Favorites</>
-                            ) : (
-                                <><FaRegHeart /> Add to Favorites</>
-                            )}
-                        </button>
+                        <>
+                            <button
+                                onClick={toggleFavorite}
+                                className="mt-4 w-full flex items-center justify-center gap-2 bg-pink-100 text-pink-600 py-2 px-4 rounded-lg transition disabled:opacity-50 cursor-pointer hover:scale-105"
+                                disabled={isFavorite}
+                            >
+                                {isFavorite ? (
+                                    <><FaHeart /> Added to Favorites</>
+                                ) : (
+                                    <><FaRegHeart /> Add to Favorites</>
+                                )}
+                            </button>
+
+                            <button
+                                onClick={sendRequest}
+                                className="mt-2 w-full flex items-center justify-center gap-2 bg-blue-100 text-blue-600 py-2 px-4 rounded-lg transition disabled:opacity-50 cursor-pointer hover:scale-105"
+                                disabled={isRequested}
+                            >
+                                {isRequested ? (
+                                    <>✅ Request Sent</>
+                                ) : (
+                                    <>📨 Send Request</>
+                                )}
+                            </button>
+                        </>
                     )}
                 </div>
 
@@ -149,7 +195,7 @@ const BiodataDetails = () => {
                                 {!isPremiumUser && !isOwnBiodata && <FaLock className="text-yellow-500" />}
                             </h2>
 
-                            {(isPremiumUser || isOwnBiodata) ? (
+                            {(isPremiumUser || isOwnBiodata || isRequested) ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <p className="text-gray-600">Email: <span className="text-gray-800">{data.contactEmail}</span></p>
                                     <p className="text-gray-600">Mobile: <span className="text-gray-800">{data.mobileNumber}</span></p>

@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useAuthInfo from '../hooks/useAuthInfo';
 
@@ -6,6 +6,7 @@ import useAuthInfo from '../hooks/useAuthInfo';
 
 
 const Navbar = () => {
+
     const { user, logoutUser } = useAuthInfo();
     const handleLogout = () => {
         logoutUser()
@@ -16,27 +17,10 @@ const Navbar = () => {
                 console.error("Error during logout:", error);
             });
     }
-    return (
-        // <div className='flex justify-between items-center h-16 w-full bg-[#2a2525] px-2'>
-        //     {/* logo and name */}
-        // <div className='text-white flex gap-2 items-center'>
-        //     <img className='w-12' src="/logo.avif" alt="" />
-        //     <h1 className='font-semibold text-2xl'>MatrimonySite</h1>
-        // </div>
-        //     {/* navigation items */}
-        //     <div className='text-white space-x-2'>
-        //         <NavLink to="/">Home</NavLink>
-        //         <NavLink to="/dashboard">DashBoard</NavLink>
-        //         <NavLink to="/biodatas">Biodatas</NavLink>
-        //         <NavLink>About Us</NavLink>
-        //         <NavLink>Contact Us</NavLink>
-        //     </div>
-        //     <div className='text-white space-x-2'>
-        //         <NavLink>Login</NavLink>
-        //         <NavLink>Logout</NavLink>
 
-        //     </div>
-        // </div>
+    const isAdmin = user?.email === 'admin@gmail.com';
+
+    return (
         <div>
             <nav className="bg-[#2a2525] border-gray-200 dark:bg-gray-900">
                 <div className="flex flex-wrap justify-between items-center mx-auto p-4">
@@ -69,6 +53,7 @@ const Navbar = () => {
                         <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
                             <NavLink to="/">Home</NavLink>
                             <NavLink to="/dashboard">DashBoard</NavLink>
+                            {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
                             <NavLink to="/biodatas">Biodatas</NavLink>
                             <NavLink>About Us</NavLink>
                             <NavLink>Contact Us</NavLink>
