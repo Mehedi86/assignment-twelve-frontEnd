@@ -21,7 +21,8 @@ const EditBiodata = () => {
         expectedPartnerHeight: '',
         expectedPartnerWeight: '',
         contactEmail: user?.email || '',
-        mobileNumber: ''
+        mobileNumber: '',
+        religion: '' // ✅ Add this line
     });
 
     useEffect(() => {
@@ -64,19 +65,32 @@ const EditBiodata = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('http://localhost:5000/biodatas', {
-                method: 'POST',
+            let url = 'http://localhost:5000/biodatas';
+            let method = 'POST';
+
+            if (biodata._id) {
+                url = `http://localhost:5000/biodatas/${biodata._id}`;
+                method = 'PUT';
+            }
+
+            const res = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(biodata),
             });
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
             const data = await res.json();
             console.log(data);
-            alert('Biodata submitted successfully!');
+            alert(biodata._id ? 'Biodata updated successfully!' : 'Biodata submitted successfully!');
         } catch (error) {
             console.error("Error:", error);
-            alert('Failed to submit biodata');
+            alert(biodata._id ? 'Failed to update biodata' : 'Failed to submit biodata');
         }
     };
 

@@ -5,7 +5,8 @@ import useAuthInfo from '../hooks/useAuthInfo';
 
 const BiodataDetails = () => {
     const [isFavorite, setIsFavorite] = useState(false);
-    const [isRequested, setIsRequested] = useState(false);
+    const [isRequested, setIsRequested] = useState(false); // means request sent
+    const [isApproved, setIsApproved] = useState(false); // means request approved
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
@@ -27,15 +28,24 @@ const BiodataDetails = () => {
                 setData(biodata || null);
 
                 if (user?.email && biodata?.biodataId) {
-                    // Check Favorite
+                    // Favorite check
                     const favRes = await fetch(`http://localhost:5000/favourites?email=${user.email}&biodataId=${biodata.biodataId}`);
                     const favData = await favRes.json();
                     setIsFavorite(favData.isFavorite);
 
-                    // Check Request
-                    const reqRes = await fetch(`http://localhost:5000/requests?email=${user.email}&biodataId=${biodata.biodataId}`);
-                    const reqData = await reqRes.json();
-                    setIsRequested(reqData.isRequested);
+                    // Request check
+                    const reqRes = await fetch(`http://localhost:5000/requests`);
+                    const allRequests = await reqRes.json();
+                    const matchingRequest = allRequests.find(
+                        req => req.requesterEmail === user.email && req.targetBiodataId === biodata.biodataId
+                    );
+
+                    if (matchingRequest) {
+                        setIsRequested(true);
+                        if (matchingRequest.status === true) {
+                            setIsApproved(true);
+                        }
+                    }
                 }
 
                 setLoading(false);
@@ -80,6 +90,7 @@ const BiodataDetails = () => {
             requesterEmail: user.email,
             targetBiodataId: data.biodataId,
             targetEmail: data.contactEmail,
+            status: false // explicitly set to pending
         };
 
         try {
@@ -92,7 +103,7 @@ const BiodataDetails = () => {
             const result = await res.json();
 
             if (result.insertedId) {
-                setIsRequested(true);
+                setIsRequested(true); // Request sent, but not approved yet
             }
         } catch (err) {
             console.error('Failed to send request:', err);
@@ -117,6 +128,7 @@ const BiodataDetails = () => {
 
     const isPremiumUser = user?.isPremium || false;
     const isOwnBiodata = data.contactEmail === user?.email;
+    const canViewContact = isPremiumUser || isOwnBiodata || isApproved;
 
     return (
         <div className="max-w-4xl mx-auto my-4 p-6 bg-white rounded-lg shadow-md">
@@ -192,10 +204,10 @@ const BiodataDetails = () => {
                         <div className="space-y-4 md:col-span-2">
                             <h2 className="text-xl font-semibold text-gray-700 border-b pb-2 flex items-center gap-2">
                                 Contact Information
-                                {!isPremiumUser && !isOwnBiodata && <FaLock className="text-yellow-500" />}
+                                {!canViewContact && <FaLock className="text-yellow-500" />}
                             </h2>
 
-                            {(isPremiumUser || isOwnBiodata || isRequested) ? (
+                            {canViewContact ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <p className="text-gray-600">Email: <span className="text-gray-800">{data.contactEmail}</span></p>
                                     <p className="text-gray-600">Mobile: <span className="text-gray-800">{data.mobileNumber}</span></p>
@@ -203,7 +215,7 @@ const BiodataDetails = () => {
                             ) : (
                                 <div className="bg-yellow-50 p-4 rounded-lg text-center">
                                     <p className="text-yellow-700 flex items-center justify-center gap-2">
-                                        <FaLock /> This information is only available to premium members
+                                        <FaLock /> This information is only available to premium members or if your request is approved
                                     </p>
                                     <button className="mt-2 bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition">
                                         Upgrade to Premium
