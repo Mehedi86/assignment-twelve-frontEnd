@@ -1,4 +1,3 @@
-import React, { use, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useAuthInfo from '../hooks/useAuthInfo';
 
@@ -50,13 +49,13 @@ const Navbar = () => {
             <nav className="bg-gray-50 dark:bg-gray-700">
                 <div className="max-w-screen-xl px-4 py-3 mx-auto">
                     <div className="flex items-center">
-                        <ul className="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
+                        <ul className="flex flex-row flex-wrap font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
                             <NavLink to="/">Home</NavLink>
-                            <NavLink to="/dashboard">DashBoard</NavLink>
+                            {user && <NavLink to="/dashboard">DashBoard</NavLink>}
                             {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
                             <NavLink to="/biodatas">Biodatas</NavLink>
-                            <NavLink>About Us</NavLink>
-                            <NavLink>Contact Us</NavLink>
+                            <NavLink to="/about">About Us</NavLink>
+                            <NavLink to= "/contact">Contact Us</NavLink>
                         </ul>
                     </div>
                 </div>

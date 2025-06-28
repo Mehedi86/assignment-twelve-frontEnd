@@ -7,7 +7,7 @@ const SuccessStory = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/stories')
+        fetch('https://assignment-12-backend-sigma.vercel.app/stories')
             .then(res => res.json())
             .then(data => {
                 if (status) {

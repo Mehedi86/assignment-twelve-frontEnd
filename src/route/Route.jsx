@@ -14,6 +14,9 @@ import AdminLayout from "../layout/AdminLayout";
 import ApprovedContactRequest from "../pages/ApproveContactRequest";
 import ApprovedPremium from "../pages/ApprovedPremium";
 import ManageUsers from "../pages/ManageUsers";
+import PrivateRoute from "./PrivateRoute";
+import AboutUs from "../pages/AboutUs";
+import Contact from "../pages/Contact";
 
 const router = createBrowserRouter([
     {
@@ -38,8 +41,16 @@ const router = createBrowserRouter([
             },
             {
                 path: '/biodata/:id',
-                element: <BiodataDetails />
+                element: <PrivateRoute><BiodataDetails /></PrivateRoute>,
             },
+            {
+                path: '/about',
+                element: <AboutUs/>
+            },
+            {
+                path: 'contact',
+                element: <Contact/>
+            }
         ]
     },
     {
@@ -52,7 +63,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/myBiodata',
-                element: <BiodataDetails />
+                element: <PrivateRoute><BiodataDetails /></PrivateRoute>
             },
             {
                 path: '/dashboard/favourites',

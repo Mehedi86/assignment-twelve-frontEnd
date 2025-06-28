@@ -15,7 +15,7 @@ const BiodataDetails = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch('http://localhost:5000/biodatas');
+                const res = await fetch('https://assignment-12-backend-sigma.vercel.app/biodatas');
                 const allData = await res.json();
 
                 let biodata;
@@ -29,12 +29,12 @@ const BiodataDetails = () => {
 
                 if (user?.email && biodata?.biodataId) {
                     // Favorite check
-                    const favRes = await fetch(`http://localhost:5000/favourites?email=${user.email}&biodataId=${biodata.biodataId}`);
+                    const favRes = await fetch(`https://assignment-12-backend-sigma.vercel.app/favourites?email=${user.email}&biodataId=${biodata.biodataId}`);
                     const favData = await favRes.json();
                     setIsFavorite(favData.isFavorite);
 
                     // Request check
-                    const reqRes = await fetch(`http://localhost:5000/requests`);
+                    const reqRes = await fetch(`https://assignment-12-backend-sigma.vercel.app/requests`);
                     const allRequests = await reqRes.json();
                     const matchingRequest = allRequests.find(
                         req => req.requesterEmail === user.email && req.targetBiodataId === biodata.biodataId
@@ -67,7 +67,7 @@ const BiodataDetails = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:5000/favourites', {
+            const res = await fetch('https://assignment-12-backend-sigma.vercel.app/favourites', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(favouriteData),
@@ -94,7 +94,7 @@ const BiodataDetails = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:5000/requests', {
+            const res = await fetch('https://assignment-12-backend-sigma.vercel.app/requests', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData),

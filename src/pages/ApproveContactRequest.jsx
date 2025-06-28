@@ -7,7 +7,7 @@ const ApprovedContactRequest = () => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const res = await fetch('http://localhost:5000/admin/requests');
+                const res = await fetch('https://assignment-12-backend-sigma.vercel.app/admin/requests');
                 const data = await res.json();
                 setContactRequests(data);
             } catch (error) {
@@ -21,7 +21,7 @@ const ApprovedContactRequest = () => {
     // Approve a request (set status: true)
     const handleApproveContact = async (id) => {
         try {
-            const res = await fetch(`http://localhost:5000/requests/${id}`, {
+            const res = await fetch(`https://assignment-12-backend-sigma.vercel.app/requests/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: true })

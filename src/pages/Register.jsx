@@ -39,7 +39,7 @@ const Register = () => {
     };
 
     return (
-        <div className="max-w-sm mx-auto py-20">
+        <div className="max-w-sm mx-auto py-20 px-2">
             <form onSubmit={handleRegister}>
                 <div className="mb-5">
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your name</label>

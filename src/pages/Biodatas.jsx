@@ -15,10 +15,10 @@ const Biodatas = () => {
         heightTo: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 9;
 
     useEffect(() => {
-        fetch('http://localhost:5000/biodatas')
+        fetch('https://assignment-12-backend-sigma.vercel.app/biodatas')
             .then(res => res.json())
             .then(data => setBiodatas(data));
     }, []);
@@ -62,15 +62,15 @@ const Biodatas = () => {
     };
 
     return (
-        <div className="grid grid-cols-12 gap-6 my-12">
+        <div className="grid md:grid-cols-12 gap-6 my-12">
             {/* Sidebar */}
-            <div className="col-span-3">
+            <div className="md:col-span-3">
                 <SideSearchBar filters={filters} onFilterChange={handleFilterChange} />
             </div>
 
             {/* Main content (biodata cards) */}
-            <div className="col-span-9 h-[490px] pr-2">
-                <div className="grid grid-cols-3 gap-6 h-fit">
+            <div className="md:col-span-9 min-h-[490px] pr-2">
+                <div className="grid md:grid-cols-3 gap-6 h-fit">
                     {currentItems.map(biodata => (
                         <BiodataCard key={biodata.biodataId} biodata={biodata} />
                     ))}

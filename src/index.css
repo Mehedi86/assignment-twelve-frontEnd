@@ -2,3 +2,10 @@
 /* @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite"; */
+
+
+.active{
+    color: brown ;
+    font-size: 16px;
+    text-decoration: underline;
+}

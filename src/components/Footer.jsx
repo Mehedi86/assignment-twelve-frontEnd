@@ -6,8 +6,8 @@ import { FaSquareWhatsapp } from "react-icons/fa6";
 const Footer = () => {
     return (
         <div className='bg-neutral-800'>
-            <div className='h-60 w-full text-gray-200 px-12 py-12'>
-                <div className='grid grid-cols-3'>
+            <div className='md:h-60 w-full text-gray-200 px-12 py-12'>
+                <div className='grid md:grid-cols-3'>
                     {/* left */}
                     <div>
                         <div className='text-white flex gap-2 items-center'>

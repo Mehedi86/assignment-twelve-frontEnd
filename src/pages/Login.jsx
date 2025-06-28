@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import SocialLogin from '../components/SocialLogin';
 import useAuthInfo from '../hooks/useAuthInfo';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const {loginUser} = useAuthInfo();
+    const { loginUser } = useAuthInfo();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -15,13 +18,16 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log("User logged in:", user);
+                const from = location?.state;
+                setTimeout(() => navigate(from || '/'), 1000);
+
             })
             .catch(error => {
                 console.error("Error during login:", error);
             });
     };
     return (
-        <div className='max-w-sm mx-auto py-20'>
+        <div className='max-w-sm mx-auto py-20 px-2'>
             <form onSubmit={handleLogin}>
                 <div className="mb-5">
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>

@@ -15,7 +15,7 @@ const MyContactRequest = () => {
         const fetchMyRequests = async () => {
             try {
                 setLoading(true);
-                const res = await fetch("http://localhost:5000/requests");
+                const res = await fetch("https://assignment-12-backend-sigma.vercel.app/requests");
 
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);

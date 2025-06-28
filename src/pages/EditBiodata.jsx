@@ -29,7 +29,7 @@ const EditBiodata = () => {
         const fetchBiodata = async () => {
             if (user?.email) {
                 try {
-                    const res = await fetch(`http://localhost:5000/biodatas/email/${user.email}`);
+                    const res = await fetch(`https://assignment-12-backend-sigma.vercel.app/biodatas/email/${user.email}`);
                     const data = await res.json();
                     if (data) {
                         setBiodata(prev => ({
@@ -65,11 +65,11 @@ const EditBiodata = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            let url = 'http://localhost:5000/biodatas';
+            let url = 'https://assignment-12-backend-sigma.vercel.app/biodatas';
             let method = 'POST';
 
             if (biodata._id) {
-                url = `http://localhost:5000/biodatas/${biodata._id}`;
+                url = `https://assignment-12-backend-sigma.vercel.app/biodatas/${biodata._id}`;
                 method = 'PUT';
             }
 
@@ -96,7 +96,7 @@ const EditBiodata = () => {
 
 
     return (
-        <div className="mx-auto w-[900px] my-12">
+        <div className="mx-auto md:w-[900px] my-12">
             <form onSubmit={handleSubmit}>
                 {/* Biodata Type */}
                 <div className="mb-5">

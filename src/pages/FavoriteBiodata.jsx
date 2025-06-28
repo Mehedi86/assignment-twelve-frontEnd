@@ -10,7 +10,7 @@ const FavoriteBiodata = () => {
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/favourites/list?email=${user?.email}`);
+                const res = await fetch(`https://assignment-12-backend-sigma.vercel.app/favourites/list?email=${user?.email}`);
                 const data = await res.json();
                 console.log('Fetched favorites:', data);
 
@@ -37,7 +37,7 @@ const FavoriteBiodata = () => {
         if (!confirm) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/favourites?email=${user.email}&biodataId=${biodataId}`, {
+            const res = await fetch(`https://assignment-12-backend-sigma.vercel.app/favourites?email=${user.email}&biodataId=${biodataId}`, {
                 method: 'DELETE',
             });
 
